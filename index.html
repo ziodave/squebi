@@ -4,11 +4,13 @@
         <script type="text/javascript">
             SQUEBI = {
                 configurable : true,
-                selectService : "https://api.redlink.io/1.0-BETA/data/squebi/sparql/select",
+                selectService : "http://localhost:8080/sparql/select",
+                updateService : "http://localhost:8080/sparql/update"
+                /*selectService : "https://api.redlink.io/1.0-BETA/data/squebi/sparql/select",
                 updateService : "https://api.redlink.io/1.0-BETA/data/squebi/sparql/update",
                 queryParams : {
                     key : "93jWHp9iQcN8ESHBvzdHqTgxuqEHIarRf06708fd"
-                }
+                }*/
             };
         </script>
         <script data-main="main" src="bower_components/requirejs/require.js"></script>
@@ -49,8 +51,8 @@
                             <div class="modal-body">
                                 <h3>Generic Parameters</h3>
                                 <table class="modal-table">
-                                    <tr><td>Select Endpoint</td><td><input ng-model="data.updateService"></td></tr>
-                                    <tr><td>Update Endpoint</td><td><input ng-model="data.selectService"></td></tr>
+                                    <tr><td>Select Endpoint</td><td><input ng-model="data.selectService"></td></tr>
+                                    <tr><td>Update Endpoint</td><td><input ng-model="data.updateService"></td></tr>
                                 </table>
                                 <h3>Query Parameters</h3>
                                 <table class="modal-table">

@@ -24,8 +24,10 @@ requirejs.config({
         squebiBrowse : "squebi/js/writer/squebi.browse",
         squebiJson : "squebi/js/writer/squebi.json",
         squebiXml : "squebi/js/writer/squebi.xml",
+        squebiCsv : "squebi/js/writer/squebi.csv",
         squebiPie: "squebi/js/writer/squebi.pie",
-        squebiRdfdot: "squebi/js/writer/squebi.rdfdot"
+        squebiRdfdot: "squebi/js/writer/squebi.rdfdot",
+        squebiMedia : "squebi/js/writer/squebi.media"
         //rdfstoreJs: SQUEBI.bower + "/rdfstore-js/dist/browser/rdf_store"
     },
     shim: {
@@ -42,8 +44,10 @@ requirejs.config({
         'squebiBrowse' : ['_squebi'],
         'squebiJson' : ['_squebi'],
         'squebiXml' : ['_squebi'],
+        'squebiCsv' : ['_squebi'],
         'squebiRdfdot' : ['_squebi'],
-        'squebiPie' : ['_squebi']
+        'squebiPie' : ['_squebi'],
+        'squebiMedia' : ['_squebi']
     },map: {
         '*': {
             '_css': SQUEBI.bower + '/require-css/css'
@@ -55,7 +59,9 @@ require([
     "squebiBrowse",
     "squebiJson",
     "squebiXml",
+    "squebiCsv",
     "squebiRdfdot",
+    "squebiMedia",
     'goog!visualization,1,packages:[corechart]',
     "squebiPie",
     "_css!squebi/css/flags",
@@ -79,7 +85,11 @@ require([
                 {"name":"List properties", "value":"SELECT DISTINCT ?property WHERE {\n  [] ?property []\n} ORDER BY ?property","type":"browse"},
                 {"name":"List classes and count their usage as pie chart", "value":"SELECT ?class (COUNT (?s) AS ?count) WHERE {\n  ?s a ?class\n}\nGROUP BY ?class\nORDER BY DESC(?count)","type":"piechart"},
                 {"name":"Draw a graph from data", "value":"CONSTRUCT {?a ?b ?c} WHERE {?a ?b ?c} LIMIT 5", "type":"rdfdot"},
-                {"name":"Insert a new book to the bookstore","value":"PREFIX dc: <http://purl.org/dc/elements/1.1/>\nINSERT DATA {\n  <http://example/faust1> dc:title \"Faust I\" ;\n                         a <http://example/Book> ;\n                         dc:creator <http://example.org/goethe> .\n}"}
+                {"name":"Show me the video fragments where T. Gilkz shows a Backflip after a Backflip Heelclicker", "value":"PREFIX mm: <http://linkedmultimedia.org/sparql-mm/functions#>\nPREFIX ma: <http://www.w3.org/ns/ma-ont#>\nPREFIX dct: <http://purl.org/dc/terms/>\n\nSELECT (mm:boundingBox(?l3,?l2) AS ?result) WHERE {\n\t?f1 ma:locator ?l1; dct:subject <http://linkedmultimedia.org/data/concept/person/Tyrone_Gilkz>.\n\t?f2 ma:locator ?l2; dct:subject <http://linkedmultimedia.org/data/concept/trick/Backflip>.\n\t?f3 ma:locator ?l3; dct:subject <http://linkedmultimedia.org/data/concept/trick/Backflip_Heelclicker>.\n\n\tFILTER mm:temporalContains(?l1,?l2)\n\tFILTER mm:temporalContains(?l1,?l3)\nFILTER mm:after(?l2,?l3)} LIMIT 10", "type":"media"},
+                {"name":"Show me a fragment that shows Connor Macfarlane", "value":'PREFIX foaf: <http://xmlns.com/foaf/0.1/>\nPREFIX ma: <http://www.w3.org/ns/ma-ont#>\nPREFIX dct: <http://purl.org/dc/terms/>\n\nSELECT ?l2 WHERE {\n\t?f2 ma:locator ?l2; dct:subject ?p2.\n\t?p2 foaf:name "Connor Macfarlane".\n}', "type":"media"},
+                {"name":"Show me the tempo-regional fragments where Lewis Jones is right beside Connor Macfarlane", "value":'PREFIX foaf: <http://xmlns.com/foaf/0.1/>\nPREFIX mm: <http://linkedmultimedia.org/sparql-mm/functions#>\nPREFIX ma: <http://www.w3.org/ns/ma-ont#>\nPREFIX dct: <http://purl.org/dc/terms/>\n\nSELECT (mm:boundingBox(?l1,?l2) AS ?left_right) WHERE {\n\t?f1 ma:locator ?l1; dct:subject ?p1.\n\t?p1 foaf:name "Lewis Jones".\n\t?f2 ma:locator ?l2; dct:subject ?p2.\n\t?p2 foaf:name "Connor Macfarlane".\n\n\tFILTER mm:rightBeside(?l1,?l2)\n\tFILTER mm:temporalOverlaps(?l1,?l2)\n}', "type":"media"},
+                {"name":"Insert a new book to the bookstore","value":"PREFIX dc: <http://purl.org/dc/elements/1.1/>\nINSERT DATA {\n  <http://example/faust1> dc:title \"Faust I\" ;\n                         a <http://example/Book> ;\n                         dc:creator <http://example.org/goethe> .\n}"},
+                {"name":"List all books","value":"SELECT ?book WHERE {?book a <http://example/Book>}","type":"browse"}
             ],
             "hints": [
                 {"container":"samples","content":"<img width='300px' src='" + SQUEBI.app + "/squebi/img/hint1.png'>","position":2,"dimension":{"width":100,"height":100},"css":"margin-top:-5px;margin-left:-10px"},
